@@ -1,11 +1,18 @@
-const PORT = 8000
 const axios = require("axios").default;
 const express = require("express")
 const cors = require('cors')
 require('dotenv').config()
 const app = express()
+const path = require('path')
 
 app.use(cors())
+
+//Body Parser Middleware
+app.use(express.json()) //will allow us to handle Raw JSON data
+app.use(express.urlencoded({ extended: false })) //so that we can handle url encoded data
+
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')))
 
 app.get('/word', (req, res) => {
     const options = {
@@ -46,5 +53,7 @@ app.get('/check', (req, res) => {
           console.error(error)
       })
 })
+
+const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => console.log(`Server running on PORT ${PORT}`)) 
