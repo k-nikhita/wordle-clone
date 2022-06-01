@@ -9,9 +9,7 @@ const getWordle = () => {
     fetch('http://localhost:8000/word')
     .then(response => response.json())
     .then(json => {
-        console.log(json)
         wordle = json.toUpperCase()
-        console.log(wordle)
     })
     .catch(err => console.log(err))
 }
@@ -85,19 +83,19 @@ keys.forEach((key) => {
 
 const handleClick = (letter) => {
     if(!isGameOver) {
-        console.log(letter + ' clicked')
+       
     if (letter === '«') {
         deleteLetter()
-        console.log('guessRows', guessRows)
+        // console.log('guessRows', guessRows)
         return
     }
     if (letter === 'ENTER') {
         checkRow()
-        console.log('guessRows', guessRows)
+        // console.log('guessRows', guessRows)
         return
     }
     addLetter(letter)
-    console.log('guessRows', guessRows)
+    // console.log('guessRows', guessRows)
     }    
 }
 
@@ -124,18 +122,18 @@ const deleteLetter = () => {
 
 const checkRow = () => {
     const guess = guessRows[currentRow].join('')
-    console.log('guess: ', guess)
+    // console.log('guess: ', guess)
 
         if (currentTile > 4) {
             fetch(`http://localhost:8000/check/?word=${guess}`)
             .then(response => response.json())
             .then(json => {
-                console.log(json)
+                
                 if (json === 'Entry word not found') {
                     showMessage('Word does not exist')
                     return
                 } else {
-                    console.log('guess is ' + guess + ' wordle is ' + wordle)
+                    // console.log('guess is ' + guess + ' wordle is ' + wordle)
                     flipTile()
                     if (wordle === guess) {
                         showMessage('Magnificent!')
@@ -161,7 +159,7 @@ const showMessage = (message) => {
     const messageElement = document.createElement('p')
     messageElement.textContent = message
     messageDisplay.append(messageElement)
-    setTimeout(() => messageDisplay.removeChild(messageElement), 2000)
+    setTimeout(() => messageDisplay.removeChild(messageElement), 4000)
 }
 
 const addColorToKey = (keyLetter, color) => {
@@ -191,15 +189,13 @@ const flipTile = () => {
             checkWordle = checkWordle.replace(guess.letter, '')
         }
     })
-
-    console.log('guess:', guess)  
-      
+     
     rowTiles.forEach((tile, index) => {
      
         setTimeout(() => {
             tile.classList.add('flip')
             tile.classList.add(guess[index].color)
             addColorToKey(guess[index].letter, guess[index].color)
-        }, 500 * index)        
+        }, 300 * index)        
     })
 }
