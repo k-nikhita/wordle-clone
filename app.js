@@ -122,26 +122,38 @@ const deleteLetter = () => {
 
 const checkRow = () => {
     const guess = guessRows[currentRow].join('')
-    flipTile()
-    if (currentTile > 4) {
-        console.log('guess is ' + guess + ' wordle is ' + wordle)
-        if (wordle === guess) {
-            showMessage('Magnificent!')
-            isGameOver = true
-            return
-        } else {
-            if (currentRow >= 5) {
-                isGameOver = true
-                showMessage('Game Over')
-                return
-            }
-            if (currentRow < 5) {
-                currentRow++
-                currentTile = 0
-            }
+    console.log('guess: ', guess)
+
+        if (currentTile > 4) {
+            fetch(`http://localhost:8000/check/?word=${guess}`)
+            .then(response => response.json())
+            .then(json => {
+                console.log(json)
+                if (json === 'Entry word not found') {
+                    showMessage('Word does not exist')
+                    return
+                } else {
+                    console.log('guess is ' + guess + ' wordle is ' + wordle)
+                    flipTile()
+                    if (wordle === guess) {
+                        showMessage('Magnificent!')
+                        isGameOver = true
+                        return
+                    } else {
+                        if (currentRow >= 5) {
+                            isGameOver = true
+                            showMessage('Game Over')
+                            return
+                        }
+                        if (currentRow < 5) {
+                            currentRow++
+                            currentTile = 0
+                        }
+                    }  
+                } 
+            }).catch(err => console.log(err))
         }
-   } 
-}
+    }
 
 const showMessage = (message) => {
     const messageElement = document.createElement('p')
