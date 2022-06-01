@@ -84,7 +84,8 @@ keys.forEach((key) => {
 })
 
 const handleClick = (letter) => {
-    console.log(letter + ' clicked')
+    if(!isGameOver) {
+        console.log(letter + ' clicked')
     if (letter === '«') {
         deleteLetter()
         console.log('guessRows', guessRows)
@@ -97,6 +98,7 @@ const handleClick = (letter) => {
     }
     addLetter(letter)
     console.log('guessRows', guessRows)
+    }    
 }
 
 const addLetter = (letter) => {
